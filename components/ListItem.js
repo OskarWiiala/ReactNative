@@ -27,29 +27,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   imageAndText: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     backgroundColor: 'gainsboro',
     borderWidth: 2,
     borderColor: 'white',
     padding: 15,
-    overflow: 'visible'
   },
   image: {
-    width: '50%',
-    height: '100%',
+    flex: 1,
     maxHeight: 400,
   },
   text1: {
     paddingLeft: 15,
     fontWeight: 'bold',
-    flexWrap: 'wrap'
   },
   text2: {
     padding: 15,
     width: 200,
-    flexWrap: 'wrap'
   }
 });
 
