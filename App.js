@@ -70,10 +70,6 @@ const styles = StyleSheet.create({
 
   },
 
-  statusBar: {
-    backgroundColor: 'aquamarine'
-  },
-
   bgImage: {
     width: '100%',
     height: 200
