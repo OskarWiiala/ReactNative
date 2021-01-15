@@ -2,11 +2,14 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 
+const uploadsURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
+
 const ListItem = (props) => {
   return (<TouchableOpacity style={styles.imageAndText}>
     <Image
       style={styles.image}
-      source={{uri: props.singleMedia.thumbnails.w160}}
+      source={{uri: uploadsURL + props.singleMedia.thumbnails.w160}}
+      // source={{uri: uploadsURL + props.singleMedia.filename}}
     />
     <View>
       <Text style={styles.text1}>{props.singleMedia.title}</Text>
