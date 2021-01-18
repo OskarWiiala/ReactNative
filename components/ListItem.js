@@ -4,8 +4,18 @@ import PropTypes from 'prop-types';
 
 const uploadsURL = 'http://media.mw.metropolia.fi/wbma/uploads/';
 
+
+
 const ListItem = (props) => {
-  return (<TouchableOpacity style={styles.imageAndText}>
+
+  return (<TouchableOpacity style={styles.imageAndText} onPress={
+    () => {
+      props.navigation.navigate('Single', {file: props.singleMedia});
+    }
+  }>
+
+
+
     <Image
       style={styles.image}
       source={{uri: uploadsURL + props.singleMedia.thumbnails.w160}}
@@ -15,11 +25,14 @@ const ListItem = (props) => {
       <Text style={styles.text1}>{props.singleMedia.title}</Text>
       <Text style={styles.text2}>{props.singleMedia.description}</Text>
     </View>
+
+
   </TouchableOpacity>);
 };
 
 ListItem.propTypes = {
-  singleMedia: PropTypes.object
+  singleMedia: PropTypes.object,
+  navigation: PropTypes.object
 };
 
 const styles = StyleSheet.create({
