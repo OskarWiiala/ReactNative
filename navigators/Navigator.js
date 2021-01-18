@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -6,6 +6,9 @@ import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Single from '../views/Single';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/core';
+import Login from '../views/Login';
+import {MainContext} from '../contexts/MainContext'
+
 
 const Tab = createBottomTabNavigator();
 
@@ -22,24 +25,35 @@ const TabScreen = () => {
 };
 
 const StackScreen = () => {
+  const [isLoggedIn] = useContext(MainContext);
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={TabScreen}
-                    options={({route}) => ({headerTitle: getFocusedRouteNameFromRoute(route),})} />
-      <Stack.Screen name="Single" component={Single} />
-    </Stack.Navigator>
-  );
-};
+        <Stack.Navigator>
+          {isLoggedIn ? (
+          <>
+          <Stack.Screen name="Home" component={TabScreen}
+                        options={({route}) => ({
+                          headerTitle: getFocusedRouteNameFromRoute(route)
+                        })} />
+          <Stack.Screen name="Single" component={Single} />
+        </>
+        ) : (
+        <>
+          <Stack.Screen name="Login" component={Login} />
+        </>
+        )}
+        </Stack.Navigator>
+      );
+    };
 
-const Navigator = () => {
-  return (
-    <NavigationContainer>
+  const Navigator = () => {
+    return (
+      <NavigationContainer>
 
-      <StackScreen />
+        <StackScreen />
 
-    </NavigationContainer>
-  );
-};
+      </NavigationContainer>
+    );
+  };
 
-export default Navigator;
+  export default Navigator;
 
