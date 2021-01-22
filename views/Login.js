@@ -1,62 +1,41 @@
 import React, {useContext, useEffect} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button
-} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useLogin} from '../hooks/ApiHooks';
+import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
 
 const Login = (navigation) => { // props is needed for navigation
-  const [isLoggedIn, setIsLoggedIn] = useContext(MainContext);
-  console.log('is logged in?', isLoggedIn);
-
-  const {postLogin, checkToken} = useLogin();
-
-  const logIn = async () => {
-    const testUser = {
-      username: 'mattpe2021',
-      password: 'masanpassu',
-    };
-    try {
-      const userData = await postLogin(testUser);
-      setIsLoggedIn(true);
-      await AsyncStorage.setItem('userToken', userData.token);
-    } catch (error) {
-      console.error('postLogin error' + error.message);
-      // TODO: add user notification about login error
-    };
-
-
-  };
+  const {isLoggedIn, setIsLoggedIn, setUser} = useContext(MainContext);
+  console.log('isLoggedIn?', isLoggedIn);
+  const {checkToken} = useLogin();
 
   const getToken = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
     console.log('token', userToken);
     if (userToken) {
       try {
-        await checkToken(userToken);
+        const userData = await checkToken(userToken);
         setIsLoggedIn(true);
+        setUser(userData);
         navigation.navigate('Home');
       } catch (error) {
         console.log('Token check failed', error.message);
-      };
-    };
+      }
+    }
   };
   useEffect(() => {
     getToken();
-    if (isLoggedIn) {
-      navigation.navigate('Home');
-    };
   }, []);
 
   return (
     <View style={styles.container}>
       <Text>Login</Text>
-      <Button title="Sign in!" onPress={logIn} />
+      <LoginForm navigation={navigation} />
+      <Text>Register</Text>
+      <RegisterForm navigation={navigation} />
     </View>
   );
 };

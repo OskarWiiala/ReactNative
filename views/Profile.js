@@ -4,17 +4,24 @@ import {MainContext} from '../contexts/MainContext'
 import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Profile = (navigation) => {
-  const [isLoggedIn, setIsLoggedIn] = useContext(MainContext);
-  console.log('profile', isLoggedIn);
+const Profile = ({navigation}) => {
+  const {isLoggedIn, setIsLoggedIn, user} = useContext(MainContext);
+  console.log('profile isLoggedIn? ', isLoggedIn);
+  console.log('profile user data: ', user)
   const logout = async () => {
     setIsLoggedIn(false);
     await AsyncStorage.clear();
-    navigation.navigate('Login');
+    if(!isLoggedIn) {
+      //this is to make sure isLoggedIn has changed, will be removed later
+      navigation.navigate('Login');
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
       <Text>Profile</Text>
+      <Text>Name: {user.username}</Text>
+      <Text>Email: {user.email}</Text>
+      {/*<Text>ID: {user.user_id}</Text>*/}
       <Button title={'Logout'} onPress={logout} />
     </SafeAreaView>
   );

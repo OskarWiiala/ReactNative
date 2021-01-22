@@ -1,17 +1,14 @@
 import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Single from '../views/Single';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/core';
 import Login from '../views/Login';
 import {MainContext} from '../contexts/MainContext'
 
-
 const Tab = createBottomTabNavigator();
-
 const Stack = createStackNavigator();
 
 const TabScreen = () => {
@@ -25,7 +22,7 @@ const TabScreen = () => {
 };
 
 const StackScreen = () => {
-  const [isLoggedIn] = useContext(MainContext);
+  const {isLoggedIn} = useContext(MainContext);
   return (
         <Stack.Navigator>
           {isLoggedIn ? (
@@ -48,9 +45,7 @@ const StackScreen = () => {
   const Navigator = () => {
     return (
       <NavigationContainer>
-
         <StackScreen />
-
       </NavigationContainer>
     );
   };

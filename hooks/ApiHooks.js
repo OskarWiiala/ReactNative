@@ -1,23 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import {baseUrl} from '../utils/Variables';
 
-// const baseUrl = 'http://media.mw.metropolia.fi/wbma/';
-
 const useLoadMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
   const loadMedia = async (limit = 5) => {
     try {
-      const response = await fetch(baseUrl + 'media?limit=' + limit);
-      const json = await response.json();
-      console.log(json);
+      const listResponse = await fetch(baseUrl + 'media?limit=' + limit);
+      const listJson = await listResponse.json();
+      console.log('response json data: ', listJson);
 
-      const media = await Promise.all(json.map(async (item) => {
-        const response = await fetch(baseUrl + 'media/' + item.file_id);
-        const json = response.json();
-        console.log('media file data', json);
-        return json;
-      }));
-
+      const media = await Promise.all(
+        listJson.map(async (item) => {
+          const fileResponse = await fetch(baseUrl + 'media/' + item.file_id);
+          const fileJson = fileResponse.json();
+          // console.log('media file data', json);
+          return fileJson;
+        })
+      );
       console.log('media array data', media);
 
       setMediaArray(media);
@@ -28,12 +27,10 @@ const useLoadMedia = () => {
   useEffect(() => {
     loadMedia(10);
   }, []);
-
   return mediaArray;
 };
 
 const useLogin = () => {
-
   const postLogin = async (userCredentials) => {
     const options = {
       method: 'POST',
@@ -41,7 +38,7 @@ const useLogin = () => {
       body: JSON.stringify(userCredentials)
     };
     try {
-      const response = fetch(baseUrl + 'login', options);
+      const response = await fetch(baseUrl + 'login', options);
       const userData = await response.json();
       console.log('postLogin response status', response.status);
       console.log('postLogin userData', userData);
@@ -49,17 +46,17 @@ const useLogin = () => {
         return userData;
       } else {
         throw new Error(userData.message());
-      };
+      }
     } catch (error) {
       throw new Error(error.message());
-    };
+    }
   };
 
   const checkToken = async (token) => {
     try {
       const options = {
         method: 'GET',
-        headers: {'x-access-token': token},
+        headers: {'x-access-token': token}
       };
       const response = await fetch(baseUrl + 'user/users', options);
       const userData = response.json;
@@ -67,15 +64,44 @@ const useLogin = () => {
         return userData;
       } else {
         throw new Error(userData.message);
-      };
+      }
+      ;
     } catch (error) {
       throw new Error(error.message);
-    };
+    }
+    ;
   };
 
   return {postLogin, checkToken};
 };
 
-export {useLoadMedia, useLogin};
+const useRegister = () => {
+  const postRegister = async (inputs) => {
+    console.log('trying to create user', inputs);
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(inputs)
+    };
+    try {
+      const response = await fetch(baseUrl + 'users', fetchOptions);
+      const json = await response.json();
+      console.log('register resp', json);
+      if (response.ok) {
+        return json;
+      } else {
+        throw new Error(json.message + ': ' + json.error);
+      }
+    } catch (e) {
+      console.log('ApiHooks register', e.message);
+      throw new Error(e.message);
+    }
+  };
+  return {postRegister};
+};
+
+export {useLoadMedia, useLogin, useRegister};
 
 
