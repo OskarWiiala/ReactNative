@@ -13,7 +13,7 @@ const Single = ({route}) => {
       <Card.Title>{moment(file.time_added).format('LLL')}</Card.Title>
       <Card.Divider />
       <Card.Image
-        source={{uri: uploadsUrl + file.filename}}
+        source={{uri: uploadsURL + file.filename}}
         style={styles.image}
         PlaceholderContent={<ActivityIndicator />}
       />
