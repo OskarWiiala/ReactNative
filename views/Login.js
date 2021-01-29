@@ -1,16 +1,18 @@
+
 import React, {useContext, useEffect} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView, Platform} from 'react-native';
 import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useLogin} from '../hooks/ApiHooks';
+import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
+import {Card, Text} from 'react-native-elements';
 
-const Login = (navigation) => { // props is needed for navigation
+const Login = ({navigation}) => {
   const {isLoggedIn, setIsLoggedIn, setUser} = useContext(MainContext);
   console.log('isLoggedIn?', isLoggedIn);
-  const {checkToken} = useLogin();
+  const {checkToken} = useUser();
 
   const getToken = async () => {
     const userToken = await AsyncStorage.getItem('userToken');
@@ -22,7 +24,7 @@ const Login = (navigation) => { // props is needed for navigation
         setUser(userData);
         navigation.navigate('Home');
       } catch (error) {
-        console.log('Token check failed', error.message);
+        console.log('token check failed', error.message);
       }
     }
   };
@@ -31,26 +33,46 @@ const Login = (navigation) => { // props is needed for navigation
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Login</Text>
-      <LoginForm navigation={navigation} />
-      <Text>Register</Text>
-      <RegisterForm navigation={navigation} />
-    </View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+    >
+      <View style={styles.appTitle}>
+        <Text h1>MyApp</Text>
+      </View>
+      <View style={styles.form}>
+        <Card>
+          <Card.Title h4>Login</Card.Title>
+          <Card.Divider />
+          <LoginForm navigation={navigation} />
+        </Card>
+        <Card>
+          <Card.Title h4>Register</Card.Title>
+          <Card.Divider />
+          <RegisterForm navigation={navigation} />
+        </Card>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    padding: 16,
+  },
+  appTitle: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+  },
+  form: {
+    flex: 4,
+  },
 });
 
 Login.propTypes = {
-  navigation: PropTypes.object
+  navigation: PropTypes.object,
 };
 
 export default Login;
