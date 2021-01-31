@@ -1,4 +1,5 @@
-const uploadsURL = 'http://media-new.mw.metropolia.fi/wbma/uploads/';
-const baseUrl = 'http://media-new.mw.metropolia.fi/wbma/';
+const uploadsURL = 'https://media-new.mw.metropolia.fi/wbma/uploads/';
+const baseUrl = 'https://media-new.mw.metropolia.fi/wbma/';
+
 
 export {uploadsURL, baseUrl};

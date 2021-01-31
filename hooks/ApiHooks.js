@@ -45,7 +45,7 @@ const useLogin = () => {
     const options = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(userCredentials),
+      body: JSON.stringify(userCredentials)
     };
     try {
       const userData = await doFetch(baseUrl + 'login', options);
@@ -64,9 +64,9 @@ const useUser = () => {
     const fetchOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(inputs),
+      body: JSON.stringify(inputs)
     };
     try {
       const json = await doFetch(baseUrl + 'users', fetchOptions);
@@ -81,7 +81,7 @@ const useUser = () => {
     try {
       const options = {
         method: 'GET',
-        headers: {'x-access-token': token},
+        headers: {'x-access-token': token}
       };
       const userData = await doFetch(baseUrl + 'users/user', options);
       return userData;
@@ -90,7 +90,16 @@ const useUser = () => {
     }
   };
 
-  return {postRegister, checkToken};
+  const checkIsUserAvailable = async (username) => {
+    try {
+      const result = await doFetch(baseUrl + 'users/username/' + username);
+      return result.available;
+    } catch (error) {
+      throw new Error('ApiHooks.js checkIsUserAvailable' + error.message)
+    }
+  };
+
+  return {postRegister, checkToken, checkIsUserAvailable};
 };
 
 const useTag = () => {
