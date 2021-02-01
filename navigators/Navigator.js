@@ -10,6 +10,7 @@ import {
 import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Single from '../views/Single';
+import Upload from '../views/Upload';
 import Login from '../views/Login';
 import {MainContext} from '../contexts/MainContext';
 import {Icon} from 'react-native-elements';
@@ -30,6 +31,9 @@ const TabScreen = () => {
             case 'Profile':
               iconName = 'account-box';
               break;
+            case 'Upload':
+              iconName = 'cloud-upload';
+              break;
           }
           return <Icon name={iconName} size={size} color={color} />;
         },
@@ -37,6 +41,7 @@ const TabScreen = () => {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Upload" component={Upload} />
     </Tab.Navigator>
   );
 };

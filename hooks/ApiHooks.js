@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {baseUrl} from '../utils/Variables';
 
@@ -45,7 +46,7 @@ const useLogin = () => {
     const options = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(userCredentials)
+      body: JSON.stringify(userCredentials),
     };
     try {
       const userData = await doFetch(baseUrl + 'login', options);
@@ -64,9 +65,9 @@ const useUser = () => {
     const fetchOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(inputs)
+      body: JSON.stringify(inputs),
     };
     try {
       const json = await doFetch(baseUrl + 'users', fetchOptions);
@@ -81,7 +82,7 @@ const useUser = () => {
     try {
       const options = {
         method: 'GET',
-        headers: {'x-access-token': token}
+        headers: {'x-access-token': token},
       };
       const userData = await doFetch(baseUrl + 'users/user', options);
       return userData;
@@ -95,7 +96,7 @@ const useUser = () => {
       const result = await doFetch(baseUrl + 'users/username/' + username);
       return result.available;
     } catch (error) {
-      throw new Error('ApiHooks.js checkIsUserAvailable' + error.message)
+      throw new Error('apihooks checkIsUserAvailable', error.message);
     }
   };
 
@@ -114,6 +115,24 @@ const useTag = () => {
   return {getFilesByTag};
 };
 
-export {useLoadMedia, useLogin, useUser, useTag};
+const useMedia = () => {
+  const upload = async (fd, token) => {
+    const options = {
+      method: 'POST',
+      headers: {'x-access-token': token},
+      data: fd,
+      url: baseUrl + 'media',
+    };
+    try {
+      const response = await axios(options);
+      return response.data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+  return {upload};
+};
+
+export {useLoadMedia, useLogin, useUser, useTag, useMedia};
 
 
