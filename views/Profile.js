@@ -58,7 +58,7 @@ const Profile = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  image: {width: '100%', height: undefined, aspectRatio: 1},
+  image: {width: '100%', height: '50%', aspectRatio: 1},
 });
 
 Profile.propTypes = {

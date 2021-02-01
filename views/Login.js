@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   form: {
-    flex: 2,
+    flex: 6,
   },
   text: {
     alignSelf: 'center',
